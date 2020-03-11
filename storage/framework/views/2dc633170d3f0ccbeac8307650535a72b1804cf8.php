@@ -74,6 +74,8 @@
                         <a href="<?php echo e(url('/login')); ?>">Login</a>
                         <a href="<?php echo e(url('/register')); ?>">Register</a>
                     <?php endif; ?>
+                       <li ><a href="<?php echo e(url('/en')); ?>">En</a></li>
+                        <li ><a href="<?php echo e(url('/fr')); ?>">Fr</a></li>
                 </div>
             <?php endif; ?>
 
