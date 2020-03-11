@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,7 +28,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ url('/',app()->getLocale()) }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
@@ -43,8 +43,15 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
+                            <li><a href="{{route('login',app()->getLocale())}}">{{ trans('auth.Login')}}</a></li>
+                            <li><a href="{{ route('register',app()->getLocale()) }}">{{ trans('auth.Register')}}</a></li>
+                            @foreach (config('app.available_locales') as $locale)
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{{ route(\Illuminate\Support\Facades\Route::currentRouteName(), $locale) }}"
+                                       @if (app()->getLocale() == $locale) style="font-weight: bold; text-decoration: underline" @endif>{{ strtoupper($locale) }}</a>
+                                </li>
+                            @endforeach
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -59,13 +66,16 @@
                                             Logout
                                         </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        <form id="logout-form" action="{{ route('logout',app()->getLocale()) }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
+
                                 </ul>
-                            </li>
+
                         @endif
+
+
                     </ul>
                 </div>
             </div>
